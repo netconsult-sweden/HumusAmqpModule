@@ -91,6 +91,12 @@ class ConsumerAbstractServiceFactory extends AbstractAmqpQueueAbstractServiceFac
             );
         }
         $callback        = $callbackManager->get($spec['callback']);
+        if (!is_callable($callback)) {
+            throw new Exception\RuntimeException(sprintf(
+                'Plugin of type %s is invalid; must be a callable',
+                (is_object($callback) ? get_class($callback) : gettype($callback))
+            ));
+        }
         $consumer->setDeliveryCallback($callback);
 
         if (isset($spec['flush_callback'])) {
@@ -100,6 +106,12 @@ class ConsumerAbstractServiceFactory extends AbstractAmqpQueueAbstractServiceFac
                 );
             }
             $flushCallback = $callbackManager->get($spec['flush_callback']);
+            if (!is_callable($flushCallback)) {
+                throw new Exception\RuntimeException(sprintf(
+                    'Plugin of type %s is invalid; must be a callable',
+                    (is_object($flushCallback) ? get_class($flushCallback) : gettype($flushCallback))
+                ));
+            }
             $consumer->setFlushCallback($flushCallback);
         }
 
@@ -110,6 +122,12 @@ class ConsumerAbstractServiceFactory extends AbstractAmqpQueueAbstractServiceFac
                 );
             }
             $errorCallback = $callbackManager->get($spec['error_callback']);
+            if (!is_callable($errorCallback)) {
+                throw new Exception\RuntimeException(sprintf(
+                    'Plugin of type %s is invalid; must be a callable',
+                    (is_object($errorCallback) ? get_class($errorCallback) : gettype($errorCallback))
+                ));
+            }
             $consumer->setErrorCallback($errorCallback);
         }
 

@@ -61,7 +61,8 @@ class Module implements
             $serviceName = __NAMESPACE__ . '\\PluginManager\\' . $ns;
             $factory = function () use ($serviceName, $config, $ns, $configKey, $serviceManager) {
                 $serviceConfig = $config['humus_amqp_module']['plugin_managers'][$configKey];
-                $service = new $serviceName(new \Zend\ServiceManager\Config($serviceConfig));
+                $service = new $serviceName(new \Zend\ServiceManager\Config($serviceConfig)); /* @var $service AbstractPluginManager */
+                $service->addPeeringServiceManager($serviceManager);
                 /* @var $service \Zend\ServiceManager\ServiceManager */
                 if ('Connection' == $ns) {
                     $service->addInitializer(function ($connection) {
